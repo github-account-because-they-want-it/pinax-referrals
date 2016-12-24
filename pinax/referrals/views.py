@@ -1,7 +1,7 @@
 import json
 
 from django.conf import settings
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 from django.shortcuts import redirect, get_object_or_404
 from django.template import RequestContext
 from django.template.loader import render_to_string
@@ -37,8 +37,7 @@ def create_referral(request):
         target=target
     )
 
-    return HttpResponse(
-        json.dumps({
+    return JsonResponse({
             "url": referral.url,
             "code": referral.code,
             "html": render_to_string(
@@ -46,9 +45,7 @@ def create_referral(request):
                 ctx,
                 context_instance=RequestContext(request)
             )
-        }),
-        mimetype="application/json"
-    )
+        })
 
 
 def process_referral(request, code):
